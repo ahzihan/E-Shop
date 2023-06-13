@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class QuerybuilderController extends Controller
 {
-    function RetrievingAllRows(Request $request){
+    function RetrievingAllRows(){
         $products=DB::table('products')->get();
         $single = DB::table('products')->first();
 
@@ -20,12 +20,12 @@ class QuerybuilderController extends Controller
         return view('single', compact('findById'));
     }
 
-    function RetrievingColumnValues(Request $request){
+    function RetrievingColumnValues(){
         $ColumnValue = DB::table('products')->pluck('title','id');
         return $ColumnValue;
     }
 
-    function Aggregates(Request $request){
+    function Aggregates(){
         $count = DB::table('products')->count();
         $max = DB::table('products')->max('price');
         $min = DB::table('products')->min('price');
@@ -34,17 +34,17 @@ class QuerybuilderController extends Controller
         return ['count'=>$count,'max'=>$max,'min'=>$min,'avg'=>$avg,'sum'=>$sum];
     }
 
-    function SelectClause(Request $request){
+    function SelectClause(){
         $selectedValue = DB::table('products')->select('title','stock','price')->get();
         return $selectedValue;
     }
 
-    function SelectDistinct(Request $request){
+    function SelectDistinct(){
         $selectedDistinct = DB::table('products')->select('title')->distinct()->get();
         return $selectedDistinct;
     }
 
-    function InnerJoin(Request $request){
+    function InnerJoin(){
         $products = DB::table('products')
         ->join('categories','products.categoryId', '=', 'categories.id')
         ->join('brands','products.brandId', '=', 'brands.id')
@@ -52,7 +52,7 @@ class QuerybuilderController extends Controller
         return $products;
     }
 
-    function LeftJoin(Request $request){
+    function LeftJoin(){
         $products = DB::table('products')
         ->leftJoin('categories','products.categoryId', '=', 'categories.id')
         ->leftJoin('brands','products.brandId', '=', 'brands.id')
@@ -60,7 +60,7 @@ class QuerybuilderController extends Controller
         return $products;
     }
 
-    function RightJoin(Request $request){
+    function RightJoin(){
         $products = DB::table('products')
         ->rightJoin('categories','products.categoryId', '=', 'categories.id')
         ->rightJoin('brands','products.brandId', '=', 'brands.id')
@@ -68,14 +68,14 @@ class QuerybuilderController extends Controller
         return $products;
     }
 
-    function CrossJoin(Request $request){
+    function CrossJoin(){
         $products = DB::table('products')
         ->crossJoin('categories','products.categoryId', '=', 'categories.id')
         ->get();
         return $products;
     }
 
-    function AdvancedJoin(Request $request){
+    function AdvancedJoin(){
         $products = DB::table('products')
         ->join('categories',function(JoinClause $join){
             $join->on('products.categoryId', '=', 'categories.id')
@@ -89,10 +89,15 @@ class QuerybuilderController extends Controller
         return $products;
     }
 
-    function Union(Request $request){
+    function Union(){
         $query = DB::table('products')->where('products.price', '>', 1000);
         $unionQuery = DB::table('products')->where('categoryId', '=', '2')->union($query)
         ->get();
         return $unionQuery;
+    }
+    function BasicWhereClauses(){
+        $query = DB::table('products')->where('products.price', '>', 1000)
+        ->get();
+        return $query;
     }
 }
