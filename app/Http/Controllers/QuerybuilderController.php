@@ -96,8 +96,16 @@ class QuerybuilderController extends Controller
         return $unionQuery;
     }
     function BasicWhereClauses(){
-        $query = DB::table('products')->where('products.price', '>', 1000)
-        ->get();
+//        $query = DB::table('products')->where('price', '>', 1000)->get();
+
+//        $query = DB::table('products')->where('title', 'LIKE', '%Ca%')->get();
+
+//        $query = DB::table('products')->where('title', 'NOT LIKE', '%Ca%')->get();
+
+//        $query = DB::table('products')->where('price', 'IN', ['1000','5000'])->get();
+
+        $query = DB::table('products')->where('price', 'NOT IN', ['1000','5000'])->get();
+
         return $query;
     }
 }
